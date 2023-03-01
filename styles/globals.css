@@ -230,3 +230,17 @@ section {
     -o-animation: floating 0.8s linear infinite;
     animation: floating 0.8s linear infinite;
   }
+
+  .no-scroll-ui::-webkit-scrollbar {
+    display: none !important;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scroll-ui {
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    scrollbar-width: none !important;  /* Firefox */
+  }
+
+.overlay-no-scroll {
+    @apply md:!h-screen md:!max-h-screen !overflow-hidden;
+}
