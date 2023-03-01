@@ -77,6 +77,7 @@ export default function ReportCTA({isOpen = false, onClose = () => {}}: Props) {
 
     return isOpen ?
         <div className={`transition-all text-white ${isOpen?'opacity-[1]' : 'opacity-0'} w-screen h-screen !z-[100] font-roboto fixed top-0 left-0 flex p-5 font-roboto items-center bg-black !text-[white] bg-opacity-[0.7] justify-center`}>
+            <div className="w-full absolute h-full !z-[109]" onClick={onClose}/>
             <div className="relative backdrop-blur-md !z-[110] transition-all w-full h-full md:max-w-[600px] md:max-h-[90%] relative border border-white p-4">
                 <div className="w-full h-full max-w-full !z-[111] max-h-full overflow-y-scroll overflow-x-hidden no-scroll-ui lg:max-w-[800px]">
                 <AnimatePresence>
@@ -112,7 +113,7 @@ export default function ReportCTA({isOpen = false, onClose = () => {}}: Props) {
                     }
                 </AnimatePresence>
                 </div>
-                <button onClick={onClose} className="fixed right-0 top-0 border z-[120] border-white border-t-0 border-r-0 aspect-square p-2 transition-all group hover:bg-white"><img className="max-w-[20px] transition-all group-hover:invert-0 invert" src="/static/img/close_light.png"/></button>
+                <button disabled={flowState == 'loading'} onClick={onClose} className="fixed right-0 top-0 border z-[120] border-white border-t-0 border-r-0 aspect-square p-2 transition-all group hover:bg-white disabled:pointer-events-none disabled:opacity-0"><img className="max-w-[20px] transition-all group-hover:invert-0 invert" src="/static/img/close_light.png"/></button>
                 
             </div>
         </div>
