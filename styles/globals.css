@@ -152,8 +152,11 @@ section {
     @apply col-span-1 bg-transparent border-b border-white font-roboto text-white outline-0 py-2 pl-1;
 }
 
-button.black-b {
-    @apply bg-transparent border border-white px-4 py-3;
+.black-b {
+    @apply bg-transparent border border-white px-4 py-3 transition-all hover:bg-white hover:text-black;
+}
+.white-b {
+    @apply bg-white text-black border border-white px-4 py-3 transition-all hover:text-white hover:bg-black;
 }
 
 @-webkit-keyframes rotating /* Safari and Chrome */ {
@@ -190,4 +193,40 @@ button.black-b {
     -ms-animation: rotating 0.8s linear infinite;
     -o-animation: rotating 0.8s linear infinite;
     animation: rotating 0.8s linear infinite;
+  }
+
+  @-webkit-keyframes floating /* Safari and Chrome */ {
+    from {
+      -webkit-transform: translateY(1px), rotate(90deg);
+      -o-transform: translateY(1px), rotate(90deg);
+      transform: translateY(1px), rotate(90deg);
+    }
+    to {
+      -webkit-transform: translateY(-5px), rotate(90deg);
+      -o-transform: translateY(-5px), rotate(90deg);
+      transform: translateY(-5px), rotate(90deg);
+    }
+  }
+  @keyframes floating {
+    from {
+      -ms-transform: translateY(1px), rotate(90deg);
+      -moz-transform: translateY(1px), rotate(90deg);
+      -webkit-transform: translateY(1px), rotate(90deg);
+      -o-transform: translateY(1px), rotate(90deg);
+      transform: translateY(1px), rotate(90deg);
+    }
+    to {
+      -ms-transform: translateY(-5px), rotate(90deg);
+      -moz-transform: translateY(-5px), rotate(90deg);
+      -webkit-transform: translateY(-5px), rotate(90deg);
+      -o-transform: translateY(-5px), rotate(90deg);
+      transform: translateY(-5px), rotate(90deg);
+    }
+  }
+  .floating {
+    -webkit-animation: floating 0.8s linear infinite;
+    -moz-animation: floating 0.8s linear infinite;
+    -ms-animation: floating 0.8s linear infinite;
+    -o-animation: floating 0.8s linear infinite;
+    animation: floating 0.8s linear infinite;
   }

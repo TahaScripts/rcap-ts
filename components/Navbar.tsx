@@ -12,7 +12,7 @@ type Props = {
 export default function Navbar({scroll, navLinks, current, ctaOpen = () => {}}: Props){
     const scrollYProgress = scroll;
     const bgOpacity = useTransform(scrollYProgress, [0, 0.05], [0, 1])
-    const mobileBG = useTransform(scrollYProgress, [0.05, 0.1], [0, 1])
+    const mobileBG = useTransform(scrollYProgress, [0.025, 0.05], [0, 1])
     const backgroundColor = useTransform(bgOpacity, v => `rgba(0, 0, 0, ${v})`);
     const bgLogoSize = useTransform(scrollYProgress, [0.05, 0.1], [100, 50]);
   

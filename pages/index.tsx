@@ -28,7 +28,7 @@ export default function IndexPage(){
     h1_2: "Space Report",
     h2: "More than just rockets. A comprehensive & sector-wide review of space and aeronautics, from seed level to orbit.",
     btn1: "A brief history of the space industry",
-    btn1_fn: () => {scrollTo(landingRef.current.getBoundingClientRect().top)},
+    btn1_fn: () => {scrollTo({behavior: 'smooth',left: 0, top: introRef.current.getBoundingClientRect().top})},
     btn2: "Access full report",
     btn2_fn: () => {setReportState(true);},
   })
@@ -172,9 +172,9 @@ export default function IndexPage(){
       <ReportCTA isOpen={reportState} onClose={() => {setReportState(false);}}/>
       <m.div style={{opacity: endBGOpacity}} className="fixed w-screen max-w-screen max-h-screen overflow-hidden h-screen top-0 left-0 z-[30]">
         <Image className={`z-[30] transition-all`} src="/static/img/bg_.webp" priority blurDataURL='/static/img/bg_blur.webp' placeholder='blur' layout="fill" alt="BG"/>
-        {v2View && <VideoBG poster='/static/img/bg_' motionStyle={v2Opacity} url="/static/vid/v2.mp4"/>}
-        {apolloView && <VideoBG motionStyle={apolloOpacity} url="/static/vid/apollo11.mp4"/>}
-        {issView && <VideoBG motionStyle={issOpacity} url="/static/vid/iss.mp4"/>}
+        {v2View && <VideoBG dimensions={dimensions} poster='/static/img/bg_' motionStyle={v2Opacity} url="/static/vid/v2.mp4" mobileURL="/static/vid/v2_m.mp4"/>}
+        {apolloView && <VideoBG dimensions={dimensions} motionStyle={apolloOpacity} url="/static/vid/apollo11.mp4"/>}
+        {issView && <VideoBG dimensions={dimensions} motionStyle={issOpacity} url="/static/vid/iss.mp4"/>}
       </m.div>
 
       <Header headerCopy={hCopy} dimensions={dimensions} bgMotion={landingProgress.scrollYProgress}/>

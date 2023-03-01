@@ -25,7 +25,6 @@ export default function Header({headerCopy, bgMotion, dimensions}: Props) {
                             <a className="border w-full md:w-fit border-white bg-transparent md:p-1 cursor-pointer group transition-all hover:bg-white hover:scale-105">
                                 <button onClick={(e) => {e.preventDefault(); headerCopy.btn1_fn()}} className="block flex w-full flex-row items-center bg-white text-black py-3 px-2 md:p-4">
                                 {headerCopy.btn1}
-                                <img src="/static/img/right-arrow.png" className="h-[30px] pl-8 transition-all group-hover:translate-x-[10px]"/>
                                 </button>
                             </a>
                             <button onClick={(e) => {e.preventDefault(); headerCopy.btn2_fn();}}className="border items-center flex flex-row border-white bg-transparent py-3 px-2 md:p-4 cursor-pointer group transition-all hover:scale-105 w-full md:w-fit">
@@ -33,6 +32,10 @@ export default function Header({headerCopy, bgMotion, dimensions}: Props) {
                                 <img src="/static/img/right-arrow.png" className="h-[30px] invert grayscale pl-8 transition-all group-hover:translate-x-[10px]"/>
                             </button>
                         </div>
+                    </div>
+                    <div className="absolute w-full text-center bottom-0 left-0 right-0 flex flex-col items-center justify-center font-[200] pb-[30px]">
+                        <img src="/static/img/right-arrow.png" className="h-[30px] floating mb-2 invert grayscale  transition-all group-hover:translate-x-[10px]"/>
+                        SCROLL
                     </div>
                 </div>
             </div>
