@@ -7,7 +7,7 @@ type Props = {
     onClose?: ()=>void,
 }
 
-function Questions({onState = () => {}, onClick = ({result: []}) => {}, disabled = false}) {
+function Questions({onState = () => {}, onClick = (result: any) => {}, disabled = false}) {
     const [questions, setQuestions] = useState([['Invest in the aerospace sector', '/nav/rcaplogo.svg', '', 'group-hover:invert'], ['Work at a space company', '/badge.svg', 'invert', 'group-hover:invert-0'], ['Raise for a space startup', '/raise.svg', 'invert', 'group-hover:invert-0'], ['Read the latest space reports',  '/read.svg', '', 'group-hover:invert']]) 
     const [qState, setqState] = useState(Array(questions.length).fill(false))
 
@@ -22,7 +22,8 @@ function Questions({onState = () => {}, onClick = ({result: []}) => {}, disabled
         let returnState = questions.map((i, k) => {
             return [i[0], qState[k]]
         })
-        onClick({result: returnState});
+        console.log(returnState);
+        onClick(returnState);
     }
 
     return (
@@ -107,7 +108,7 @@ export default function ReportCTA({isOpen = false, onClose = () => {}}: Props) {
                 <AnimatePresence>
                     {
                         (flowState == 'form') && (
-                        <m.div initial={{opacity:0, x: 500}} animate={{ x: 0, opacity: 1 }} exit={{opacity: 0, x:-500}} transition={{duration: 0.2}} className={`${flowState != 'form' && 'absolute'} w-full h-full p-10 flex flex-col items-center justify-center`}>
+                        <m.div initial={{opacity:0, x: 500}} animate={{ x: 0, opacity: 1 }} exit={{opacity: 0, x:-500}} transition={{duration: 0.2}} className={`${flowState != 'form' && 'absolute'} w-full h-full md:p-10 flex flex-col items-center justify-center`}>
                                 <h1 className="text-3xl text-center font-[500]">Your exclusive space report access is almost ready!</h1>
                                 <div className="w-full grid grid-cols-1 gap-4 mt-10 mb-4 md:grid-cols-2">
                                     <input type="text" placeholder="First Name*" ref={fnameRef} className="report-input"/>
