@@ -244,3 +244,16 @@ section {
 .overlay-no-scroll {
     @apply md:!h-screen md:!max-h-screen !overflow-hidden;
 }
+
+.nav-expand {
+    @apply absolute w-screen h-screen top-0 left-0 !bg-white z-[150];
+}
+
+.nav-expand .row {
+    border-color: rgba(0, 0, 0, 0.1);
+    @apply border-b w-full block text-black;
+}
+
+.nav-expand .row .shell {
+    @apply w-[90%] mx-auto text-4xl font-[400] py-5;
+}

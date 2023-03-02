@@ -167,9 +167,15 @@ export default function IndexPage(){
     return () => {window.removeEventListener('resize', resize);}
   }, [])
 
+  useEffect(() => {
+    let windowPos = window.scrollY
+    reportState ? document.body.classList.add('overlay-no-scroll') : document.body.classList.remove('overlay-no-scroll')
+    document.body.style.top = String(windowPos) + 'px'
+  }, [reportState])
+
   return (
     <Layout title="Space Report | Republic Capital" scroll={globalScroll.scrollYProgress} ctaOpen={() => {setReportState(true)}}>
-      <ReportCTA isOpen={reportState} onClose={() => {setReportState(false);}}/>
+      {reportState && <ReportCTA isOpen={reportState} onClose={() => {setReportState(false);}}/>}
       <m.div style={{opacity: endBGOpacity}} className="fixed w-screen max-w-screen max-h-screen overflow-hidden h-screen top-0 left-0 z-[30]">
         <Image className={`z-[30] transition-all`} src="/static/img/bg_.webp" priority blurDataURL='/static/img/bg_blur.webp' placeholder='blur' layout="fill" alt="BG"/>
         {v2View && <VideoBG dimensions={dimensions} poster='/static/img/bg_' motionStyle={v2Opacity} url="/static/vid/v2.mp4" mobileURL="/static/vid/v2_m.mp4"/>}

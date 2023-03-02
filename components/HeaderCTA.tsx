@@ -11,7 +11,6 @@ type Props = {
 }
 
 export default function Header({headerCopy, bgMotion, dimensions}: Props) {
-    console.log(headerCopy)
     return (
         <section className="!h-[screen]">
             <div className="section-bg !h-[screen]">
@@ -34,7 +33,7 @@ export default function Header({headerCopy, bgMotion, dimensions}: Props) {
                         </div>
                     </div>
                     <div className="absolute w-full text-center bottom-0 left-0 right-0 flex flex-col items-center justify-center font-[200] pb-[30px]">
-                        <img src="/static/img/right-arrow.png" className="h-[30px] floating mb-2 invert grayscale  transition-all group-hover:translate-x-[10px]"/>
+                        <img src="/static/img/right-arrow.png" className="h-[30px] floating mb-2 invert grayscale  transition-all group-hover:translate-x-[10px] rotate-[90deg]"/>
                         SCROLL
                     </div>
                 </div>

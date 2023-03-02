@@ -9,6 +9,7 @@
   "dependencies": {
     "@storyofams/next-password-protect": "^1.7.0",
     "framer-motion": "^9.0.2",
+    "js-confetti": "^0.11.0",
     "next": "latest",
     "prefixer": "^0.0.3",
     "react": "^18.2.0",
