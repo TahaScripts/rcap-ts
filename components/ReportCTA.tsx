@@ -73,7 +73,6 @@ export default function ReportCTA({isOpen = false, onClose = () => {}}: Props) {
     const submitForm = async () => {
         console.log(termsAgreedByUser);
         if (flowState == 'loading' && termsAgreedByUser) {
-            await fetch('/api/sheets').then(r=>r.json()).then(d=>console.log(d))
             await new Promise(() => setTimeout(() => {setFlowState('success');}, 1000));
             return true;
         }
