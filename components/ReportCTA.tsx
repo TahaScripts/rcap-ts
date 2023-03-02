@@ -70,15 +70,16 @@ export default function ReportCTA({isOpen = false, onClose = () => {}}: Props) {
     const emailRef = useRef(null);
     const orgRef = useRef(null);
 
-    const submitForm = async () => {
-        console.log(termsAgreedByUser);
-        if (flowState == 'loading' && termsAgreedByUser) {
-            await new Promise(() => setTimeout(() => {setFlowState('success');}, 1000));
-            return true;
+    var submitForm = () => {
+        setFlowState('loading')
+        console.log(termsAgreedByUser, flowState);
+        if (termsAgreedByUser) {
+            console.log('yep')
+            setFlowState('success')
         }
     }
 
-    const checkForm = () => {
+    var checkForm = () => {
         if (flowState == 'form') {
             var tempData = {fname : fnameRef.current.value,
                 lname : lnameRef.current.value,
@@ -97,9 +98,7 @@ export default function ReportCTA({isOpen = false, onClose = () => {}}: Props) {
             } else if (!termsAgreedByUser) {
                 setFormData({ ...tempData, submit: 'validating', errorText: 'Please agree to the ToS & Disclaimer to proceed.'})
             } else {
-                
                 setFormData({...tempData, submit: 'fetch', errorText: ''})
-                setFlowState('loading')
                 submitForm();
             }
         }
