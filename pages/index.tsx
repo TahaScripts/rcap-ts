@@ -336,7 +336,7 @@ export default function IndexPage(){
           </m.div>
           <div className="mt-10 md:mt-[20vh] w-full grid grid-cols-1 lg:grid-cols-2 gap-10 gap-y-20 md:gap-y-[20vh]">
               <div className="col col-span-1 h-full flex items-center justify-center">
-                <m.div style={{y: satParallax}} className="relative p-8">
+                <m.div style={{y: satParallax}} className="relative bg-white bg-opacity-[0.5] p-8">
                   <div className="corner corner-tl"/>
                   <div className="corner corner-bl"/>
                   <div className="corner corner-tr"/>
@@ -351,7 +351,7 @@ export default function IndexPage(){
                 </m.div>
               </div>
               <div className="col col-span-1 flex items-center justify-center lg:col-span-2">
-                <m.div style={{y: satParallax}} className="w-full md:max-w-[800px] p-8 relative">
+                <m.div style={{y: satParallax}} className="w-full bg-white bg-opacity-[0.5] md:max-w-[800px] p-8 relative">
                   <div className="corner shorter corner-tl"/>
                     <div className="corner shorter corner-bl"/>
                     <div className="corner shorter corner-tr"/>
@@ -361,7 +361,7 @@ export default function IndexPage(){
               </div>
               <div className="col col-span-1 lg:col-span-2">
                 <m.div style={{y:satParallax}} className="w-full h-full overflow-scroll max-w-full md:overflow-visible md:flex items-center justify-center ">
-                <div className="w-[1000px] md:w-full md:max-w-[1000px] bg-white bg-opacity-[0.1] backdrop-blur-sm">
+                <div className="w-[1000px] md:w-full md:max-w-[1000px] bg-white bg-opacity-[0.5] backdrop-blur-sm">
                   <div className="w-full bg-black text-white grid grid-cols-10 py-10 px-10">
                     <div className="sat-header sat-status">
                       Status

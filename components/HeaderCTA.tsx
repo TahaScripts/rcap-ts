@@ -16,7 +16,7 @@ export default function Header({headerCopy, bgMotion, dimensions}: Props) {
             <div className="section-bg !h-[screen]">
                 {dimensions.width > 0 && (dimensions.width > 800 ? <Image alt="" style={{objectFit: 'cover', objectPosition: 'right center'}} className="z-[60]" src={headerCopy.img.desktop} blurDataURL={headerCopy.img.desktop_blur} priority placeholder='blur' fill/> : <Image alt="" style={{objectFit: 'cover', objectPosition: 'right center'}} className="z-[60]" src={headerCopy.img.mobile} blurDataURL={headerCopy.img.mobile_blur} priority placeholder='blur' fill/>)}
                 <div className="absolute !bg-[transparent] z-[100] pt-8 top-0 left-0 w-full h-full">
-                    <div className="default-padding text-center md:text-left bg-[transparent] h-full flex flex-col justify-center text-white">
+                    <div className="default-padding relative text-center md:text-left bg-[transparent] h-full flex flex-col justify-center text-white">
                         <h1 className="text-4xl md:text-6xl font-[500]">{headerCopy.h1_1}</h1>
                         <h1 className="text-5xl md:text-7xl font-[600] mt-2 mb-20">{headerCopy.h1_2}</h1>
                         <h2 className="text-lg font-[300] max-w-[600px] mb-10">{headerCopy.h2}</h2>
@@ -31,11 +31,12 @@ export default function Header({headerCopy, bgMotion, dimensions}: Props) {
                                 <img src="/static/img/right-arrow.png" className="h-[30px] invert grayscale pl-8 transition-all group-hover:translate-x-[10px]"/>
                             </button>
                         </div>
+                        <div className="absolute w-[fit] text-center  left-0 lg:left-auto bottom-0 right-0 flex flex-col items-center justify-center font-[200] mb-10 lg:m-[100px]">
+                            <img src="/static/img/right-arrow.png" className="h-[30px] floating mb-2 invert grayscale  transition-all group-hover:translate-x-[10px] rotate-[90deg]"/>
+                            SCROLL
+                        </div>
                     </div>
-                    <div className="absolute w-full text-center bottom-0 left-0 right-0 flex flex-col items-center justify-center font-[200] pb-[30px]">
-                        <img src="/static/img/right-arrow.png" className="h-[30px] floating mb-2 invert grayscale  transition-all group-hover:translate-x-[10px] rotate-[90deg]"/>
-                        SCROLL
-                    </div>
+                    
                 </div>
             </div>
         </section>

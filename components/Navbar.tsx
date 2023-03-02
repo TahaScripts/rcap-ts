@@ -17,7 +17,7 @@ export default function Navbar({scroll, navLinks, current, ctaOpen = () => {}}: 
     const backgroundColor = useTransform(bgOpacity, v => `rgba(0, 0, 0, ${v})`);
     const bgLogoSize = useTransform(scrollYProgress, [0.05, 0.1], [100, 50]);
     
-    const [burgerOpen, setBurgerOpen] = useState(true);
+    const [burgerOpen, setBurgerOpen] = useState(false);
 
     const ctaWidth = useTransform(scrollYProgress, [0, 0.05], [200, 0])
     const ctaTranslate = useTransform(scrollYProgress, [0.0, 0.05], [0, 1])

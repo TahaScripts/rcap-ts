@@ -257,3 +257,10 @@ section {
 .nav-expand .row .shell {
     @apply w-[90%] mx-auto text-4xl font-[400] py-5;
 }
+
+.checkbox {
+    @apply w-[20px] aspect-square border border-2 border-white bg-black flex items-center justify-center;
+}
+.checkbox .checked {
+    @apply bg-white w-[5px] h-[5px];
+}

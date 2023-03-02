@@ -52,6 +52,7 @@ export default function ReportCTA({isOpen = false, onClose = () => {}}: Props) {
     const [flowState, setFlowState] = useState('questions')
     const [formData, setFormData] = useState({fname: '', lname: '', email: '', org: '', errorText: '', submit: ''})
     const [questionData, setQuestionData] = useState([])
+    const [termsAgreedByUser, setTermsAgreedByUser] = useState(false);
 
     const canvasRef = useRef(null);
     
@@ -70,9 +71,12 @@ export default function ReportCTA({isOpen = false, onClose = () => {}}: Props) {
     const orgRef = useRef(null);
 
     const submitForm = async () => {
-        await fetch('/api/sheets').then(r=>r.json()).then(d=>console.log(d))
-        await new Promise(() => setTimeout(() => {setFlowState('success');}, 1000));
-        return true;
+        console.log(termsAgreedByUser);
+        if (flowState == 'loading' && termsAgreedByUser) {
+            await fetch('/api/sheets').then(r=>r.json()).then(d=>console.log(d))
+            await new Promise(() => setTimeout(() => {setFlowState('success');}, 1000));
+            return true;
+        }
     }
 
     const checkForm = () => {
@@ -91,6 +95,8 @@ export default function ReportCTA({isOpen = false, onClose = () => {}}: Props) {
                 setFormData({ ...tempData, submit: 'validating', errorText: 'Your last name must be only letters, no numbers or special symbols.'})
             } else if (tempData.email.length < 4 || !tempData.email.includes('@') || !tempData.email.includes('.')) {
                 setFormData({ ...tempData, submit: 'validating', errorText: 'Please provide a valid email address.'})
+            } else if (!termsAgreedByUser) {
+                setFormData({ ...tempData, submit: 'validating', errorText: 'Please agree to the ToS & Disclaimer to proceed.'})
             } else {
                 
                 setFormData({...tempData, submit: 'fetch', errorText: ''})
@@ -103,20 +109,23 @@ export default function ReportCTA({isOpen = false, onClose = () => {}}: Props) {
     return isOpen ?
         <div className={`transition-all text-white ${isOpen?'opacity-[1]' : 'opacity-0'} w-screen h-screen !z-[100] font-roboto fixed top-0 left-0 flex p-5 font-roboto items-center bg-black !text-[white] bg-opacity-[0.7] justify-center`}>
             <div className="w-full absolute h-full !z-[109]" onClick={onClose}/>
-            <div className="relative backdrop-blur-md !z-[110] transition-all w-full h-full md:max-w-[600px] md:max-h-[90%] relative border border-white p-4">
+            <div className=" backdrop-blur-md !z-[110] transition-all w-full h-full md:max-w-[600px] md:max-h-[90%] relative border border-white p-4 !relative">
                 <div className="w-full h-full max-w-full !z-[111] max-h-full overflow-y-scroll overflow-x-hidden no-scroll-ui lg:max-w-[800px]">
                 <AnimatePresence>
                     {
                         (flowState == 'form') && (
                         <m.div initial={{opacity:0, x: 500}} animate={{ x: 0, opacity: 1 }} exit={{opacity: 0, x:-500}} transition={{duration: 0.2}} className={`${flowState != 'form' && 'absolute'} w-full h-full md:p-10 flex flex-col items-center justify-center`}>
                                 <h1 className="text-3xl text-center font-[500]">Your exclusive space report access is almost ready!</h1>
-                                <div className="w-full grid grid-cols-1 gap-4 mt-10 mb-4 md:grid-cols-2">
+                                <div className="w-full grid grid-cols-1 gap-4 mt-10 md:grid-cols-2">
                                     <input type="text" placeholder="First Name*" ref={fnameRef} className="report-input"/>
                                     <input type="text" placeholder="Last Name*" ref={lnameRef} className="report-input"/>
                                     <input type="text" placeholder="Email Address*" ref={emailRef} className="report-input"/>
                                     <input type="text" placeholder="Organization" ref={orgRef} className="report-input"/>
+                                    <div className="col-span-1 md:col-span-2 flex flex-row mb-4 items-center justify-center mt-5 gap-4"><button onClick={(e) => {e.preventDefault();setTermsAgreedByUser(!termsAgreedByUser)}} className={`checkbox`}>{termsAgreedByUser && <div className="checked"/>}</button><p className="text-sm">By clicking this box, you agree to the Terms of Service and Disclaimers.</p></div>
+                                    <a className="col-span-1 text-sm opacity-[0.8] text-center underline" rel="noreferrer" target='_blank' href="https://republiccapital.co/terms-of-service">Terms of Service</a>
+                                    <a className="col-span-1 text-sm opacity-0.8] text-center underline" rel="noreferrer" target='_blank' href="https://republiccapital.co/disclaimer">Disclaimer</a>
                                 </div>
-                                <p className="italic text-center mb-10">{formData.errorText != '' ? formData.errorText : 'Boxes marked with * are required.'}</p>
+                                <p className="italic text-center mt-10">{formData.errorText != '' ? formData.errorText : 'Boxes marked with * are required.'}</p>
                                 <m.button initial={{opacity:0}} animate={{opacity:1, transition: {duration: 0.1, delay:0.1}}} onClick={(e) => {e.preventDefault(); checkForm();}} className="fixed z-[120] white-b bottom-0 right-0 text-xl !border-2 !border-t-4 w-full text-center !px-10 !py-5 font-[600]">Get Access</m.button>
                         </m.div>)                       
                     }
