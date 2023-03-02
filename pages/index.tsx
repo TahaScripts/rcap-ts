@@ -1,14 +1,19 @@
-import Link from 'next/link'
 import Image from 'next/image'
 import Layout from '../components/Layout'
 import Header from '../components/HeaderCTA'
 import { HeaderCopy, ClientDimensions, NavLink, NextImage } from '../interfaces'
 import { useState, useEffect, useRef } from 'react'
 import { m, useScroll, useTransform, useInView } from "framer-motion"
-import LoadText from '../components/LoadText'
 import ReactCompareImage from "react-compare-image";
 import VideoBG from '../components/VideoBG'
 import ReportCTA from '../components/ReportCTA'
+import V2 from "../components/content/V2"
+import Sputnik from '../components/content/Sputnik'
+import Apollo from '../components/content/Apollo'
+import Station from '../components/content/Station'
+import ISS from '../components/content/ISS'
+import Shuttle from '../components/content/Shuttle'
+import Satellite from '../components/content/Satellite'
 
 export default function IndexPage(){
   // initialState
@@ -193,203 +198,31 @@ export default function IndexPage(){
       </section>
 
       <section ref={v2Ref} className="!bg-[transparent]">
-        <m.div style={{y:v2Parallax}} className="default-padding min-h-screen flex items-center justify-start">
-          <div className="text-block shadow-2xl shadow-gray-300 md:max-w-[650px]">
-            <h1 className="header">{v2Copy.header}</h1>
-            <p dangerouslySetInnerHTML={{__html: v2Copy.paragraph}} className="paragraph !text-justify"></p>
-          </div>
-        </m.div>
+        <V2 header={v2Copy.header} p={v2Copy.paragraph} parallax={v2Parallax}/>
       </section>
 
       <section ref={sputnikRef}>
-        <m.div style={{y: sputnikParallax}} className="default-padding text-center h-full flex flex-col items-center justify-center gap-10">
-          <m.div className="flex flex-col items-center pb-10">
-            <div className="mb-5">
-              <h1 className="font-[700] text-2xl md:text-3xl">{sputnikCopy.subheader}</h1>
-            </div>
-            <h1 className="font-[900] text-4xl md:text-5xl">{sputnikCopy.header}</h1>
-          </m.div>
-          <m.div className="flex text-justify md:max-w-[800px] lg:max-w-[1000px] flex-col items-center p-4 md:p-10 bg-[transparent] border border-white">
-            <p className="" dangerouslySetInnerHTML={{__html: sputnikCopy.p}}/>
-          </m.div>
-          <div className="lg:flex flex-row justify-between items-center gap-5 w-full md:max-w-[800px] lg:max-w-[1000px]">
-            <div className="mb-5 lg:mb-0 border p-2 h-fit flex items-center justify-center italic gap-2 flex-col border-white max-w-full md:min-w-[500px]">
-              <div className="w-full relative aspect-[1.5] border border-white"><Image src={sputnikCopy.img[1] + ".webp"} blurDataURL={sputnikCopy.img[1] + "_blur.webp"} alt='' className="" fill/></div>
-              {sputnikCopy.img[0]}
-            </div>
-            <div className="border h-fit text-justify p-4 md:p-10 flex items-center justify-center gap-2 flex-col border-white">
-              <p className="" dangerouslySetInnerHTML={{__html: sputnikCopy.p2}}/>
-            </div>
-          </div>
-        </m.div>
+        <Sputnik parallax={sputnikParallax} subheader={sputnikCopy.subheader} header={sputnikCopy.header} p={sputnikCopy.p} p2={sputnikCopy.p2} img={sputnikCopy.img}/>
       </section>
 
       <section ref={apolloRef} className="!bg-[transparent]">
-        <div className="default-padding min-h-[screen]">
-          <div className="text-block !bg-[transparent] relative mb-[50vh]">
-            <m.div style={{scaleX: apolloUnroll}} className="absolute z-[38] md:origin-top-left w-full h-full top-[20px] left-[20px] bg-white bg-opacity-[0.5]"/>
-            <m.div style={{scaleX: apolloUnroll}} className="absolute z-[38] md:origin-top-left w-full h-full top-0 left-0 bg-black bg-opacity-[0.9]"/>
-            <h1 className="header z-[40] relative">The<br/>Apollo<br/>Program</h1>
-          </div>
-          <div className="w-full flex flex-wrap gap-4 z-[40] relative">
-            {apolloCopy.data.map((block, k) => {
-              return block[0] == 'gap' ? <div className="grow"/> : 
-              block[0] == 'divide' ? <div className="w-full !min-w-full block relative h-[20vh] bg[red]"/>:
-              <m.div className="text-block apollo my-auto" key={k} style={dimensions.width > 999 ? {y: k - 1 > 0 && apolloCopy.data[k - 1][0] == 'gap' ? apolloParallax : apolloReverse} : {}}>
-                {block.map((item: any, k2: any) => {
-                  return item.type == 'subheader' ? <h1 key={k2} className="subheader">{item.item}</h1> :
-                  item.type == 'img' ? <div key={k2} className={`relative w-full ${item.aspect}`}>{dimensions.width < 800 ? <Image alt="" placeholder="blur" fill blurDataURL={item.blur} src={item.url}/> : apolloView && <Image alt="" placeholder="blur" fill blurDataURL={item.blur} src={item.url}/>}</div> : 
-                  item.type == 'p' ? <p dangerouslySetInnerHTML={{__html: item.item}} key={k2} className=""></p> : 
-                  item.type == 'caption' ? <p dangerouslySetInnerHTML={{__html: item.item}} key={k2} className="caption !text-center"></p> : ''
-                })}
-              </m.div>
-            })}
-          </div>
-
-        </div>
+        <Apollo view={apolloView} parallax={apolloParallax} reverse={apolloReverse} unroll={apolloUnroll} dimensions={dimensions} data={apolloCopy.data}/>
       </section>
 
       <section ref={stationRef} className="">
-        <div className="default-padding min-h-screen">
-          <h1 className="font-[800] text-3xl md:text-5xl text-center md:mb-20">Early Orbiting Infrastructure</h1>
-          <div className="w-full h-full flex flex-col items-center justify-center md:flex-row gap-8">
-            <m.div style={{y: stationParallax}} className="text-justify md:text-right w-full p-3 border border-white flex flex-col gap-4 md:p-0 md:border-none md:max-w-[200px] text-left">
-              <div className="w-full flex flex-row items-center justify-center">
-                <h2 className="font-[500] text-lg">1986 - 2001</h2>
-                <div className="grow"/>
-                <img src="/static/img/soviet.png" className="max-w-[80px]"/>
-              </div>
-              <h2 className="font-[700] text-lg">Mir</h2>
-              <p className="">was the first continuously inhabited, long-term research station in orbit and was occupied for 12.5 years. Mir was deorbited in March 2001 after funding was cut.</p>
-              {dimensions.width < 1000 && 
-              <div className="aspect-square w-full relative"><Image alt="" src="/static/img/mir.jpeg" fill/></div>}
-            </m.div>
-            {dimensions.width > 999 && <div className="grow aspect-square relative">
-              <ReactCompareImage leftImage="/static/img/mir.jpeg" rightImage="/static/img/skylab.jpeg" />
-            </div>}
-            <m.div style={{y: stationParallax}} className="text-justify md:text-left w-full p-3 border border-white flex flex-col gap-4 md:p-0 md:border-none md:max-w-[200px] text-left">
-              <div className="w-full flex flex-row items-center justify-center">
-                <img src="/static/img/usa.png" className="max-w-[80px]"/>
-                <div className="grow"/>
-                <h2 className="font-[500] text-lg">1973 - 1974</h2>
-              </div>
-              <h2 className="font-[700] text-lg">Skylab</h2>
-              <p className="">was the first and only space station operated exclusively by the United States. Skylab‘s orbit eventually decayed, and it disintegrated in the atmosphere.</p>
-              {dimensions.width < 1000 && 
-              <div className="aspect-square w-full relative"><Image alt="" src="/static/img/skylab.jpeg" fill/></div>}
-            </m.div>
-          </div>
-        </div>
+        <Station parallax={stationParallax} dimensions={dimensions}/>
       </section>
 
       <section ref={issRef} className="!bg-[transparent]">
-        <div className="default-padding min-h-screen flex flex-col items-center justify-center">
-          <div className="text-block backdrop-blur-md !w-fit mb-10">
-            <h1 className="subheader text-center">The International Space Station</h1>
-          </div>
-          <div className="max-w-[800px]">
-            <div className="text-block backdrop-blur-md mb-8">
-              <p className="text-justify">The ISS has been orbiting Earth since 1999 and has been continuously inhabited by astronauts since 2000.<br/><br/>The permanently crewed orbital laboratory has served as a base for astronauts, a waypoint for exploration, a platform for Earth observation, and a base for microgravity research and manufacturing.<br/><br/>As the treaty between the governing nations comes to an end and as the ISS reaches the end of its useful life, the platform will be decommissioned, leaving a significant gap in the Western world&lsquo;s ability to operate in space.<br/><br/>Despite the retirement of the ISS, the U.S. is committed to sending national astronauts to low Earth orbit (LEO), codified by a 2020 congressional directive to sustain human presence in LEO.</p>
-            </div>
-            <div className="text-block text-center backdrop-blur-md max-w-[800px]">
-              <div className='w-full flex flex-wrap items-center gap-8 justify-center mb-5'>
-              {[['nasa', 'USA', 47],['esa', 'Europe', 10], ['roscosmos', 'Russia', 40], ['java', 'Japan', 6], ['csa', 'Canada', 3]].map((i, k) => {
-                return <div key={k} className="flex flex-col w-[80px] transition-all hover:scale-[1.1] items-center justify-center"><div className="w-full flex items-center justify-center aspect-square"><img className="w-[90%] invert brightness-[50%] grayscale mb-2" src={`/static/img/iss/` + i[0] + '.svg'}/></div>{i[1]}<br/><div className="flex items-center justify-center gap-2">{i[2]}<img src="/static/img/iss/astronaut.png" className="inline-block grayscale invert max-h-[12px]"/></div></div>
-              })}
-              </div>
-              <div className="flex items-center justify-center gap-1 italic mb-2 text-sm"><img src="/static/img/iss/astronaut.png" className="max-h-[12px] inline-block invert grayscale"/>= Respective agencies' astronauts deployed to ISS, 1999 - Feb 2023</div>
-              <p className="!text-center">5 agencies have cooperated for more than a decade to launch and maintain the ISS. </p>
-            </div>
-          </div>
-        </div>
+        <ISS/>
       </section>
 
       <section ref={shuttleRef} className="!bg-transparent !text-black mt-[10vh]">
-        <div className="default-padding min-h-screen flex flex-col items-center justify-center">
-          <h1 className="font-[800] text-3xl md:text-7xl text-center">THE SPACE SHUTTLE</h1>
-          <h1 className="font-[600] text-xl md:text-4xl text-center">World's First Reusable Rocket</h1>
-          <div className="mt-[15vh] w-full shuttle grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-y-[20vh]">
-            <div className="relative col col-span-1 aspect-[1.186]">
-              
-              <Image fill src="/static/img/shuttle/shuttle.webp" blurDataURL="/static/img/shuttle/shuttle_blur.webp" alt=''/>
-              <m.div style={{y: shuttleParallax}} className="text-block w-full md:w-fit absolute bottom-0 md:bottom-[-10px] right-0 md:right-[-10px]">
-                <h1 className="miniheader mb-2">First Launch</h1>
-                <h1 className="subheader !normal-case">April 12th, 1981</h1>
-              </m.div>
-            </div>
-            <div className="col md:pl-8 col-span-1 h-full flex items-center justify-center">
-              <m.div style={{y: shuttleParallax}} className="text-block alter relative">
-                
-                <p>The Shuttle was originally billed as a spacecraft that would be able to launch once a week and maintain low launch costs through amortization over a significant launch cadence.<br/><br/>The Shuttle's incremental per-kg launch costs turned out to be considerably higher than those of expendable launchers. The final cost was estimated to be about $2.1 B per launch and the total program costs are estimated to be $238B (inflation adi.)<br/><br/>NASA launched the shuttle for 135 missions between its 1981 unveiling and its 2011 decommissioning. The vehicle was plagued with safety issues. Two out of the five spacecraft were destroyed in accidents (Challenger & Columbia), killing 14 astronauts, the largest loss of life in space exploration.<br/><br/>The Shuttle was an ultimate reflection of the bloated political infrastructure that resulted in a highly inefficient NASA decision making process.</p>
-              </m.div>
-            </div>
-              
-          </div>
-        </div>
+        <Shuttle parallax={shuttleParallax}/>
       </section>
 
       <section ref={satRef} className="!bg-transparent !text-black">
-        <div className="default-padding min-h-screen z-[41] relative flex flex-col items-center">
-          <m.div style={{x: satHeader}} className="md:w-fit md:flex flex-row relative">
-            <h1 className="font-[700] text-4xl bg-white text-black py-8 px-6">1990s</h1>
-            <h1 className="font-[700] text-right md:text-center text-4xl bg-black text-white py-8 px-6">Satellite Internet & Communications</h1>
-          </m.div>
-          <div className="mt-10 md:mt-[20vh] w-full grid grid-cols-1 lg:grid-cols-2 gap-10 gap-y-20 md:gap-y-[20vh]">
-              <div className="col col-span-1 h-full flex items-center justify-center">
-                <m.div style={{y: satParallax}} className="relative bg-white bg-opacity-[0.5] p-8">
-                  <div className="corner corner-tl"/>
-                  <div className="corner corner-bl"/>
-                  <div className="corner corner-tr"/>
-                  <div className="corner corner-br"/>
-                  <p className="text-lg font-[500]">Satellite internet upstarts emerged in the mid to late-90s as space became accessible thanks to the Shuttle and cheap capital of the Dot-com Bubble.<br/><br/>The significant losses that most investors experienced while investing in satellite companies like Iridium or Teledesic were attributable to a few common factors including: (1) high upfront capex, (2) market risk, and (3) innovation in terrestrial networks.<br/><br/>For example, Iridium is a global satellite phone company that was backed by Motorola. The Iridium constellation of 66 satellites to provide global wireless service cost $5B. It filed for bankruptcy in 1999 after defaulting on $1.5B in debt.</p>
-                </m.div>
-              </div>
-              <div className="col col-span-1 relative aspect-[1.5]">
-                <Image alt='' src="/static/img/shuttle/iridium.webp" blurDataURL="/static/img/shuttle/iridium_blur.webp" fill/>
-                <m.div style={{y: satParallax}} className="text-block !py-5 w-fit !text-center !bg-white !text-black absolute bottom-0 right-0">
-                  <h1 className="caption">Model of first-generation satellite from Iridium</h1>
-                </m.div>
-              </div>
-              <div className="col col-span-1 flex items-center justify-center lg:col-span-2">
-                <m.div style={{y: satParallax}} className="w-full bg-white bg-opacity-[0.5] md:max-w-[800px] p-8 relative">
-                  <div className="corner shorter corner-tl"/>
-                    <div className="corner shorter corner-bl"/>
-                    <div className="corner shorter corner-tr"/>
-                    <div className="corner shorter corner-br"/>
-                  <p className="text-lg text-justify font-[500]">Despite aggressive marketing efforts, the company experienced a significant shortfall in subscriber additions - 20K one year after launch, vs. its original 500K forecast. Innovation in terrestrial cellular networks massively shrunk their potential market.<br/><br/>Iridium wasn't the only company giving satellite internet a try in the 90s - most went bankrupt, requiring the businesses to pivot.</p>
-                </m.div>
-              </div>
-              <div className="col col-span-1 lg:col-span-2">
-                <m.div style={{y:satParallax}} className="w-full h-full overflow-scroll max-w-full md:overflow-visible md:flex items-center justify-center ">
-                <div className="w-[1000px] md:w-full md:max-w-[1000px] bg-white bg-opacity-[0.5] backdrop-blur-sm">
-                  <div className="w-full bg-black text-white grid grid-cols-10 py-10 px-10">
-                    <div className="sat-header sat-status">
-                      Status
-                    </div>
-                    <div className="sat-header sat-company">
-                      Company
-                    </div>
-                    <div className="sat-header sat-desc">
-                      Result
-                    </div>
-                  </div>
-                  {satCopy[0].map((r) => 
-                  <div className="w-full grid grid-cols-10 px-6 transition-all md:hover:scale-[1.1]">
-                    <div className="sat-status flex items-center justify-center">
-                      {r[0] ? 'true' : 'false'}
-                    </div>
-                    <div className="sat-company flex items-center p-10 flex items-center justify-center">
-                      <img className="max-h-[50px] grayscale invert brightness-[400%] max-w-[200px]" src={'/static/img/shuttle/' + r[1] + '.webp'}/>
-                    </div>
-                    <div className="sat-desc flex items-center justify-center">
-                      {r[2]}
-                    </div>
-                  </div>)}
-                </div>
-                </m.div>
-              </div>
-          </div>
-        </div>
+        <Satellite parallax={satParallax} header={satHeader} copy={satCopy}/>
       </section>
 
       <section ref={endRef} className="!bg-[transparent] !mb-[0]">
