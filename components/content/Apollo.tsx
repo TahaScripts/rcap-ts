@@ -10,15 +10,25 @@ type Props = {
     parallax: MotionValue,
     reverse: MotionValue,
     view: boolean,
+    reduceMotion?: boolean,
 }
 
-export default function Apollo({unroll, parallax, reverse, dimensions, data, view}: Props) {
+export default function Apollo({unroll, parallax, reduceMotion = false, reverse, dimensions, data, view}: Props) {
 
     return (
       <div className="default-padding min-h-[screen]">
           <div className="text-block !bg-[transparent] relative mb-[50vh]">
-            <m.div style={{scaleX: unroll}} className="absolute z-[38] md:origin-top-left w-full h-full top-[20px] left-[20px] bg-white bg-opacity-[0.5]"/>
-            <m.div style={{scaleX: unroll}} className="absolute z-[38] md:origin-top-left w-full h-full top-0 left-0 bg-black bg-opacity-[0.9]"/>
+            {!reduceMotion ? 
+            <div className="w-full">
+              <m.div style={{scaleX: unroll}} className="absolute z-[38] md:origin-top-left w-full h-full top-[20px] left-[20px] bg-white bg-opacity-[0.5]"/>
+              <m.div style={{scaleX: unroll}} className="absolute z-[38] md:origin-top-left w-full h-full top-0 left-0 bg-black bg-opacity-[0.9]"/>
+            </div>
+            :
+            <div className="w-full">
+              <div className="absolute z-[38] md:origin-top-left w-full h-full top-[20px] left-[20px] bg-white bg-opacity-[0.5]"/>
+              <div className="absolute z-[38] md:origin-top-left w-full h-full top-0 left-0 bg-black bg-opacity-[0.9]"/>
+            </div>}
+            
             <h1 className="header z-[40] relative">The<br/>Apollo<br/>Program</h1>
           </div>
           <div className="w-full flex flex-wrap gap-4 z-[40] relative">

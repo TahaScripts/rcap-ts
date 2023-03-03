@@ -264,3 +264,11 @@ section {
 .checkbox .checked {
     @apply bg-white w-[5px] h-[5px];
 }
+
+p {
+    @apply font-[500];
+}
+
+input {
+    outline: none !important;
+}

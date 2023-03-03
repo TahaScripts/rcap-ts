@@ -23,7 +23,7 @@ export default function Navbar({scroll, navLinks, current, ctaOpen = () => {}}: 
     const ctaTranslate = useTransform(scrollYProgress, [0.0, 0.05], [0, 1])
   
   return (
-    <m.div className="nav-container" style={{backgroundColor}} initial={{opacity: 0, y:-10}} animate={{opacity: 1, y: 0}} transition={{duration: 0.25}}>
+    <m.div className="nav-container font-[500] !font-roboto" style={{backgroundColor}} initial={{opacity: 0, y:-10}} animate={{opacity: 1, y: 0}} transition={{duration: 0.25}}>
         <AnimatePresence>
             {burgerOpen &&
                 <m.div initial={{scale:0}} animate={{scale:1 }} transition={{duration: 0.1}} exit={{scale: 0}} className="nav-expand">
@@ -34,7 +34,7 @@ export default function Navbar({scroll, navLinks, current, ctaOpen = () => {}}: 
                             <m.button onClick={(e) => {e.preventDefault(); setBurgerOpen(false)}} className="max-w-[20px]"><img className=" w-full" src="/static/img/close_light.png"/></m.button>
                         </div>
                     </div>
-                    <a rel="noreferrer" target="_blank" href="https://www.republiccapital.co/portfolio" className="row">
+                    <a rel="noreferrer" target="_blank" href="https://www.republiccapital.co/companies-portfolio" className="row">
                         <div className="shell">                            
                         Portfolio
                         </div>
@@ -67,7 +67,7 @@ export default function Navbar({scroll, navLinks, current, ctaOpen = () => {}}: 
             <div className="block grow"/>
             <m.button onClick={(e) => {e.preventDefault(); setBurgerOpen(true)}} className="max-w-[20px]"><img className="invert w-full md:hidden" src="/static/img/nav/hamburger.png"/></m.button>
             <m.div style={{translateX: ctaWidth}} className="hidden md:flex flex-row gap-8 justify-center items-center h-full">
-                <a rel="noreferrer" target="_blank" href="https://www.republiccapital.co/portfolio" className="text-white">
+                <a rel="noreferrer" target="_blank" href="https://www.republiccapital.co/companies-portfolio" className="text-white">
                     Portfolio
                 </a>
                 <a rel="noreferrer" target="_blank" href="https://www.republiccapital.co/team" className="text-white">

@@ -9,14 +9,15 @@ type Props = {
   children?: ReactNode
   title?: string,
   scroll: MotionValue,
-  ctaOpen?: () => void;
+  ctaOpen?: () => void,
+  style: string,
 }
 
 const navURL: NavLink = {url: '/', label: 'Portfolio'}
 
 
-const Layout = ({ children, title, scroll, ctaOpen = () => {}}: Props) => (
-  <div>
+const Layout = ({ children, style = '', title, scroll, ctaOpen = () => {}}: Props) => (
+  <div className={style}>
     <Head>
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
@@ -32,7 +33,7 @@ const Layout = ({ children, title, scroll, ctaOpen = () => {}}: Props) => (
       <meta charSet="utf-8" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
-    <header>
+    <header className={style}>
       <Navbar ctaOpen={ctaOpen} scroll={scroll}/>
     </header>
     {children}

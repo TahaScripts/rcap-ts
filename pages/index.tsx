@@ -3,7 +3,7 @@ import Layout from '../components/Layout'
 import Header from '../components/HeaderCTA'
 import { HeaderCopy, ClientDimensions, NavLink, NextImage } from '../interfaces'
 import { useState, useEffect, useRef } from 'react'
-import { m, useScroll, useTransform, useInView } from "framer-motion"
+import { m, useScroll, useTransform, useInView, useReducedMotion } from "framer-motion"
 import ReactCompareImage from "react-compare-image";
 import VideoBG from '../components/VideoBG'
 import ReportCTA from '../components/ReportCTA'
@@ -16,6 +16,7 @@ import Shuttle from '../components/content/Shuttle'
 import Satellite from '../components/content/Satellite'
 
 export default function IndexPage(){
+  const shouldReduceMotion = useReducedMotion();
   // initialState
   const globalScroll = useScroll();
   const [navLinks, setNavLinks] = useState<Array<NavLink>>([{url: 'https://www.republiccapital.co/portfolio', label: "Portfolio"}, {url: 'https://www.republiccapital.co/space', label: "Space Report"}])
@@ -103,9 +104,8 @@ export default function IndexPage(){
 
   const [reportState, setReportState] = useState(false);
 
-
   const landingRef = useRef(null);
-  const landingProgress = useScroll({ offset: ["start start", "end start"]})
+  const landingProgress = useScroll({target: landingRef, offset: ["start end", "end start"]})
   
   const introRef = useRef(null);
   const introProgress = useScroll({target: introRef, offset: ["start start", "end start"]})
@@ -127,7 +127,7 @@ export default function IndexPage(){
   const apolloProgress = useScroll({target: apolloRef, offset: ["start end", "end start"]})
   const apolloParallax = useTransform(apolloProgress.scrollYProgress, [0, 1], [100, -100])
   const apolloReverse = useTransform(apolloProgress.scrollYProgress, [0, 1], [-100, 100])
-  const apolloOpacity = useTransform(apolloProgress.scrollYProgress, [0.15, 0.3, 0.5, 0.8], [0, 1, 1, 0])
+  const apolloOpacity = useTransform(apolloProgress.scrollYProgress, [0.1, 0.25, 0.8, 1], [0, 1, 1, 0])
   const apolloView = useInView(apolloRef, {
     margin: "-100px 0px 100px 0px"
   })
@@ -142,7 +142,7 @@ export default function IndexPage(){
 
   const issRef = useRef(null);
   const issProgress = useScroll({target: issRef, offset: ["start end", "end start"]})
-  const issOpacity = useTransform(issProgress.scrollYProgress, [0.25, 0.4, 0.7, 1], [0, 1, 1, 0])
+  const issOpacity = useTransform(issProgress.scrollYProgress, [0.25, 0.4, 0.65, 1], [0, 1, 1, 0])
   const issParallax = useTransform(issProgress.scrollYProgress, [0, 1], [200, -200])
   const issView = useInView(issRef, {
     margin: "-50px 0px 50px 0px"
@@ -165,7 +165,11 @@ export default function IndexPage(){
 
   // State-update with client browser dimensions
   const [dimensions, setDimensions] = useState<ClientDimensions>({height: 0, width: 0});
+  const [navigator, setNavigator] = useState('')
   useEffect(() => {
+    if(window.navigator.userAgent.toLowerCase().indexOf('safari')){
+      setNavigator('safari')
+    }
     setDimensions({width: window.innerWidth, height: window.innerHeight});
     const resize = () => {setDimensions({width: window.innerWidth, height: window.innerHeight});}
     window.addEventListener('resize', resize);
@@ -179,16 +183,17 @@ export default function IndexPage(){
   }, [reportState])
 
   return (
-    <Layout title="Space Report | Republic Capital" scroll={globalScroll.scrollYProgress} ctaOpen={() => {setReportState(true)}}>
-      {reportState && <ReportCTA isOpen={reportState} onClose={() => {setReportState(false);}}/>}
+    <Layout style={'navigator-' + navigator} title="Space Report | Republic Capital" scroll={globalScroll.scrollYProgress} ctaOpen={() => {setReportState(true)}}>
+      {reportState && <ReportCTA navigator={navigator} isOpen={reportState} onClose={() => {setReportState(false);}}/>}
       <m.div style={{opacity: endBGOpacity}} className="fixed w-screen max-w-screen max-h-screen overflow-hidden h-screen top-0 left-0 z-[30]">
         <Image className={`z-[30] transition-all`} src="/static/img/bg_.webp" priority blurDataURL='/static/img/bg_blur.webp' placeholder='blur' layout="fill" alt="BG"/>
         {v2View && <VideoBG dimensions={dimensions} poster='/static/img/bg_' motionStyle={v2Opacity} url="/static/vid/v2.mp4" mobileURL="/static/vid/v2_m.mp4"/>}
-        {apolloView && <VideoBG dimensions={dimensions} motionStyle={apolloOpacity} url="/static/vid/apollo11.mp4"/>}
-        {issView && <VideoBG dimensions={dimensions} motionStyle={issOpacity} url="/static/vid/iss.mp4"/>}
+        {apolloView && <VideoBG dimensions={dimensions} motionStyle={apolloOpacity} url="/static/vid/apollo11.mp4" mobileURL="/static/vid/apollo11_m.mp4"/>}
+        {issView && <VideoBG dimensions={dimensions} motionStyle={issOpacity} url="/static/vid/iss.mp4" mobileURL="/static/vid/iss_m.mp4"/>}
       </m.div>
-
-      <Header headerCopy={hCopy} dimensions={dimensions} bgMotion={landingProgress.scrollYProgress}/>
+      <section ref={landingRef} className="!h-[screen]">
+        <Header headerCopy={hCopy} dimensions={dimensions} bgMotion={landingProgress.scrollYProgress}/>
+      </section>
       
       <section ref={introRef} className="!bg-[transparent]">
         <m.div style={{y: introParallax}} className="default-padding h-full flex flex-col items-center justify-center !text-black">
@@ -198,19 +203,19 @@ export default function IndexPage(){
       </section>
 
       <section ref={v2Ref} className="!bg-[transparent]">
-        <V2 header={v2Copy.header} p={v2Copy.paragraph} parallax={v2Parallax}/>
+        <V2 reduceMotion={shouldReduceMotion} header={v2Copy.header} p={v2Copy.paragraph} parallax={v2Parallax}/>
       </section>
 
       <section ref={sputnikRef}>
-        <Sputnik parallax={sputnikParallax} subheader={sputnikCopy.subheader} header={sputnikCopy.header} p={sputnikCopy.p} p2={sputnikCopy.p2} img={sputnikCopy.img}/>
+        <Sputnik reduceMotion={shouldReduceMotion} parallax={sputnikParallax} subheader={sputnikCopy.subheader} header={sputnikCopy.header} p={sputnikCopy.p} p2={sputnikCopy.p2} img={sputnikCopy.img}/>
       </section>
 
       <section ref={apolloRef} className="!bg-[transparent]">
-        <Apollo view={apolloView} parallax={apolloParallax} reverse={apolloReverse} unroll={apolloUnroll} dimensions={dimensions} data={apolloCopy.data}/>
+        <Apollo reduceMotion={shouldReduceMotion} view={apolloView} parallax={apolloParallax} reverse={apolloReverse} unroll={apolloUnroll} dimensions={dimensions} data={apolloCopy.data}/>
       </section>
 
       <section ref={stationRef} className="">
-        <Station parallax={stationParallax} dimensions={dimensions}/>
+        <Station reduceMotion={shouldReduceMotion} parallax={stationParallax} dimensions={dimensions}/>
       </section>
 
       <section ref={issRef} className="!bg-[transparent]">
@@ -218,11 +223,11 @@ export default function IndexPage(){
       </section>
 
       <section ref={shuttleRef} className="!bg-transparent !text-black mt-[10vh]">
-        <Shuttle parallax={shuttleParallax}/>
+        <Shuttle reduceMotion={shouldReduceMotion} parallax={shuttleParallax}/>
       </section>
 
       <section ref={satRef} className="!bg-transparent !text-black">
-        <Satellite parallax={satParallax} header={satHeader} copy={satCopy}/>
+        <Satellite reduceMotion={shouldReduceMotion} parallax={satParallax} header={satHeader} copy={satCopy}/>
       </section>
 
       <section ref={endRef} className="!bg-[transparent] !mb-[0]">

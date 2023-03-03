@@ -5,9 +5,10 @@ type Props = {
     header: string,
     p: string,
     parallax: MotionValue,
+    reduceMotion?: boolean,
 }
 
-export default function V2({header = '', p = '', parallax}: Props) {
+export default function V2({header = '', p = '', reduceMotion = false, parallax}: Props) {
 
     return (
         <div className="w-full h-full">

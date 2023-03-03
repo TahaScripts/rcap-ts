@@ -1,7 +1,7 @@
 // Header
 
 import {HeaderCopy, ClientDimensions} from "../interfaces"
-import { m, MotionValue } from "framer-motion"
+import { m, MotionValue, useTransform } from "framer-motion"
 import Image from "next/image"
 
 type Props = {
@@ -11,8 +11,8 @@ type Props = {
 }
 
 export default function Header({headerCopy, bgMotion, dimensions}: Props) {
+    
     return (
-        <section className="!h-[screen]">
             <div className="section-bg !h-[screen]">
                 {dimensions.width > 0 && (dimensions.width > 800 ? <Image alt="" style={{objectFit: 'cover', objectPosition: 'right center'}} className="z-[60]" src={headerCopy.img.desktop} blurDataURL={headerCopy.img.desktop_blur} priority placeholder='blur' fill/> : <Image alt="" style={{objectFit: 'cover', objectPosition: 'right center'}} className="z-[60]" src={headerCopy.img.mobile} blurDataURL={headerCopy.img.mobile_blur} priority placeholder='blur' fill/>)}
                 <div className="absolute !bg-[transparent] z-[100] pt-8 top-0 left-0 w-full h-full">
@@ -26,9 +26,9 @@ export default function Header({headerCopy, bgMotion, dimensions}: Props) {
                                 {headerCopy.btn1}
                                 </button>
                             </a>
-                            <button onClick={(e) => {e.preventDefault(); headerCopy.btn2_fn();}}className="border items-center flex flex-row border-white bg-transparent py-3 px-2 md:p-4 cursor-pointer group transition-all hover:scale-105 w-full md:w-fit">
+                            <button onClick={(e) => {e.preventDefault(); headerCopy.btn2_fn();}}className="border items-center flex flex-row border-white bg-transparent py-3 px-2 md:p-4 cursor-pointer group transition-all hover:border-4 hover:font hover:scale-105 w-full md:w-fit">
                                 {headerCopy.btn2}
-                                <img src="/static/img/right-arrow.png" className="h-[30px] invert grayscale pl-8 transition-all group-hover:translate-x-[10px]"/>
+                                <img src="/static/img/right-arrow.png" className="h-[30px] invert grayscale pl-3 transition-all group-hover:translate-x-[5px]"/>
                             </button>
                         </div>
                         <div className="absolute w-[fit] text-center  left-0 lg:left-auto bottom-0 right-0 flex flex-col items-center justify-center font-[200] mb-10 lg:m-[100px]">
@@ -39,6 +39,5 @@ export default function Header({headerCopy, bgMotion, dimensions}: Props) {
                     
                 </div>
             </div>
-        </section>
     )
 }

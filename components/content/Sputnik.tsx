@@ -8,10 +8,11 @@ type Props = {
     p: string,
     p2: string,
     parallax: MotionValue,
-    img: string[]
+    img: string[],
+    reduceMotion?: boolean,
 }
 
-export default function Sputnik({subheader = '', header = '', p = '', parallax, p2 ='', img}: Props) {
+export default function Sputnik({reduceMotion = false, subheader = '', header = '', p = '', parallax, p2 ='', img}: Props) {
 
     return (
         <m.div style={{y: parallax}} className="default-padding text-center h-full flex flex-col items-center justify-center gap-10">
