@@ -55,13 +55,22 @@ export default function ReportCTA({navigator = '',isOpen = false, onClose = () =
     const [termsAgreedByUser, setTermsAgreedByUser] = useState(false);
 
     const canvasRef = useRef(null);
-    
-    useEffect(() => {
-        if (flowState == 'success') {
+
+    const confettiLaunch = async () => {
+        await new Promise(() => setTimeout(() => {
             const jsConfetti = new JSConfetti({ canvas: canvasRef.current })
             jsConfetti.addConfetti({
                 emojis: ['🚀', '🧑‍🚀', '💥', '✨', '💫', '🧑🏻‍🚀', '🧑🏿‍🚀', '👩🏽‍🚀', '👾', '☄️', '🔭', '☀️', ''],
             })
+        }, 1250))
+        
+    }
+    
+    useEffect(() => {
+        if (flowState == 'success') {
+            confettiLaunch();
+        } else if (flowState == 'load') {
+            submitForm();
         }
     }, [flowState])
     
@@ -70,38 +79,49 @@ export default function ReportCTA({navigator = '',isOpen = false, onClose = () =
     const emailRef = useRef(null);
     const orgRef = useRef(null);
 
-    var submitForm = () => {
-        setFlowState('loading')
-        console.log(termsAgreedByUser, flowState);
+    const submitForm = async () => {
         if (termsAgreedByUser) {
-            console.log('yep')
-            setFlowState('success')
+            await new Promise(() => setTimeout(async () => {
+                await fetch('/api/sheets', {headers:{'Content-Type': 'application/json',
+                Accept: 'application/json'},method:'POST',body: JSON.stringify({name: formData.fname + ' ' + formData.lname, email: formData.email, org: formData.org, interests: questionData.toString()})}).then((r) => r.json())
+                .then(j => {
+                    console.log(j);
+                    if (['error', 'already_registered'].includes(j.e)) {
+                        let tempForm = {...formData};
+                        tempForm.errorText = j.e == 'already_registered' ? 'This email was already used to access the space report. Please try a different one!' : 'There was an error accessing the Space Report.'
+                        setFormData(tempForm);
+                        setFlowState('form');
+                    } else {
+                        setFlowState('success');
+                    }
+                })
+            }, 300))
         }
     }
 
-    var checkForm = () => {
-        if (flowState == 'form') {
+    const checkForm = () => {
+            setFlowState('load')
             var tempData = {fname : fnameRef.current.value,
                 lname : lnameRef.current.value,
                 email : emailRef.current.value,
                 org : orgRef.current.value}
-            
-            console.log(tempData);
 
             if (tempData.fname.length < 2 || !tempData.fname.match(/^[A-Za-z]+$/)) {
                 setFormData({ ...tempData, submit: 'validating', errorText: 'Your first name must be at least 2 letters, no numbers or special symbols.'})
-                console.log(formData);
+                return
             } else if (tempData.lname.length > 0 && !tempData.lname.match(/^[A-Za-z]+$/)) {
                 setFormData({ ...tempData, submit: 'validating', errorText: 'Your last name must be only letters, no numbers or special symbols.'})
+                return
             } else if (tempData.email.length < 4 || !tempData.email.includes('@') || !tempData.email.includes('.')) {
                 setFormData({ ...tempData, submit: 'validating', errorText: 'Please provide a valid email address.'})
+                return
             } else if (!termsAgreedByUser) {
                 setFormData({ ...tempData, submit: 'validating', errorText: 'Please agree to the ToS & Disclaimer to proceed.'})
-            } else {
-                setFormData({...tempData, submit: 'fetch', errorText: ''})
-                submitForm();
+                return
             }
-        }
+            
+            setFormData({...tempData, submit: 'fetch', errorText: ''})
+            setFlowState('load')
     }
 
     return isOpen ?
@@ -124,7 +144,7 @@ export default function ReportCTA({navigator = '',isOpen = false, onClose = () =
                                     <a className="col-span-1 text-sm opacity-0.8] text-center underline" rel="noreferrer" target='_blank' href="https://republiccapital.co/disclaimer">Disclaimer</a>
                                 </div>
                                 <p className="italic text-center mt-10">{formData.errorText != '' ? formData.errorText : 'Boxes marked with * are required.'}</p>
-                                <m.button initial={{opacity:0}} animate={{opacity:1, transition: {duration: 0.1, delay:0.1}}} onClick={(e) => {e.preventDefault(); checkForm();}} className="absolute z-[120] white-b bottom-0 right-0 text-xl !border-2 w-full text-center !px-10 !py-5 font-[600]">Get Access</m.button>
+                                <m.button initial={{opacity:0}} animate={{opacity:1, transition: {duration: 0.1, delay:0.1}}} onClick={checkForm} className="absolute z-[120] white-b bottom-0 right-0 text-xl !border-2 w-full text-center !px-10 !py-5 font-[600]">Get Access</m.button>
                         </m.div>)                       
                     }
                 </AnimatePresence>
@@ -137,13 +157,13 @@ export default function ReportCTA({navigator = '',isOpen = false, onClose = () =
                 </AnimatePresence>
                 <AnimatePresence>
                     {
-                        flowState == 'loading' && (<m.div initial={{opacity:0, x: 500}} animate={{ x: 0, opacity: 1, transition: {duration:0.2}}} exit={{opacity: 0, x:100, transition: {duration:0.2, delay: 1}}} className="w-full h-full flex items-center justify-center"><m.h1 initial={{opacity:0, y: 100}} exit={{opacity: [0, 1, 1, 1, 0], y: [100, 50, 50, 50, 100], transition:{duration: 1.5}}} className="absolute">Access Requested!</m.h1><img src="/static/img/spinner.png" className="max-w-[50px] invert rotating"/></m.div>)                       
+                        flowState == 'load' && (<m.div initial={{opacity:0, x: 500}} animate={{ x: 0, opacity: 1, transition: {duration:0.2}}} exit={{opacity: 0, x:100, transition: {duration:0.2, delay: 1}}} className="w-full h-full flex items-center justify-center"><m.h1 initial={{opacity:0, y: 100}} exit={{opacity: [0, 1, 1, 1, 0], y: [100, 50, 50, 50, 100], transition:{duration: 1.5}}} className="absolute">Access Requested!</m.h1><img src="/static/img/spinner.png" className="max-w-[50px] invert rotating"/></m.div>)                       
                     }
                 </AnimatePresence>
                 <AnimatePresence>
                     {
                         flowState == 'success' && (
-                        <m.div initial={{opacity:0, x: 500}} animate={{ x: 0, opacity: 1 }} exit={{opacity: 0, x:-500}} transition={{duration: 0.2}} className="w-full text-center min-h-full py-[10vh] flex flex-col gap-5 items-center justify-center !text-white z-[110]">
+                        <m.div initial={{opacity:0, x: 500}} animate={{ x: 0, opacity: 1 }} transition={{duration: 0.2, delay:1.2}} className="w-full text-center min-h-full py-[10vh] flex flex-col gap-5 items-center justify-center !text-white z-[110]">
                             <h1 className="text-3xl font-[600]"><span className="capitalize">{formData.fname}</span>, you've received a gift from<br/>Republic Capital!</h1>
                             <p className="text-center md:max-w-[80%]">This knowledge is a culmination of our team's close relationship with, and analysis of, the space industry. We're excited for others to join what history books will call the 2nd Space Race.</p>
                             <m.a initial={{opacity:0}} animate={{opacity:1, transition: {duration: 0.1, delay:0.2}}} href='https://republiccapital.docsend.com/view/s/8c9hhd4uxqs2f4yi' rel="noreferrer" target='_blank' className="absolute z-[120] white-b bottom-0 right-0 text-xl !border-2  w-full text-center !px-10 !py-5 font-[600]">OPEN REPORT</m.a>
@@ -151,7 +171,7 @@ export default function ReportCTA({navigator = '',isOpen = false, onClose = () =
                     }
                 </AnimatePresence>
                 </div>
-                <button disabled={flowState == 'loading'} onClick={onClose} className="absolute right-0 top-0 border z-[120] border-white border-t-0 border-r-0 aspect-square p-2 transition-all group hover:bg-white disabled:pointer-events-none disabled:opacity-0"><img className="max-w-[20px] transition-all group-hover:invert-0 invert" src="/static/img/close_light.png"/></button>
+                <button disabled={flowState == 'load'} onClick={onClose} className="absolute right-0 top-0 border z-[120] border-white border-t-0 border-r-0 aspect-square p-2 transition-all group hover:bg-white disabled:pointer-events-none disabled:opacity-0"><img className="max-w-[20px] transition-all group-hover:invert-0 invert" src="/static/img/close_light.png"/></button>
                 
             </div>
             {flowState == 'success' && 
