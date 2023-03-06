@@ -76,8 +76,8 @@ export default function Satellite({parallax, reduceMotion = false, header, copy}
                     Result
                   </div>
                 </div>
-                {copy[0].map((r) => 
-                <div className="w-full grid grid-cols-10 px-6 transition-all md:hover:scale-[1.1]">
+                {copy[0].map((r, k) => 
+                <div key={k} className="w-full grid grid-cols-10 px-6 transition-all md:hover:scale-[1.1]">
                   <div className="sat-status flex items-center justify-center">
                     {r[0] ? 'true' : 'false'}
                   </div>

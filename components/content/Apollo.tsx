@@ -33,8 +33,8 @@ export default function Apollo({unroll, parallax, reduceMotion = false, reverse,
           </div>
           <div className="w-full flex flex-wrap gap-4 z-[40] relative">
             {data.map((block, k) => {
-              return block[0] == 'gap' ? <div className="grow"/> : 
-              block[0] == 'divide' ? <div className="w-full !min-w-full block relative h-[20vh] bg[red]"/>:
+              return block[0] == 'gap' ? <div key={k} className="grow"/> : 
+              block[0] == 'divide' ? <div key={k} className="w-full !min-w-full block relative h-[20vh] bg[red]"/>:
               <m.div className="text-block apollo my-auto" key={k} style={dimensions.width > 999 ? {y: k - 1 > 0 && data[k - 1][0] == 'gap' ? parallax : reverse} : {}}>
                 {block.map((item: any, k2: any) => {
                   return item.type == 'subheader' ? <h1 key={k2} className="subheader">{item.item}</h1> :

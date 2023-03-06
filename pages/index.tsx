@@ -186,7 +186,7 @@ export default function IndexPage(){
     <Layout style={'navigator-' + navigator} title="Space Report | Republic Capital" scroll={globalScroll.scrollYProgress} ctaOpen={() => {setReportState(true)}}>
       {reportState && <ReportCTA navigator={navigator} isOpen={reportState} onClose={() => {setReportState(false);}}/>}
       <m.div style={{opacity: endBGOpacity}} className="fixed w-screen max-w-screen max-h-screen overflow-hidden h-screen top-0 left-0 z-[30]">
-        <Image className={`z-[30] transition-all`} src="/static/img/bg_.webp" priority blurDataURL='/static/img/bg_blur.webp' placeholder='blur' layout="fill" alt="BG"/>
+        <Image className={`z-[30] transition-all`} src="/static/img/bg_.webp" priority blurDataURL='/static/img/bg_blur.webp' placeholder='blur' fill alt="BG"/>
         {v2View && <VideoBG dimensions={dimensions} poster='/static/img/bg_' motionStyle={v2Opacity} url="/static/vid/v2.mp4" mobileURL="/static/vid/v2_m.mp4"/>}
         {apolloView && <VideoBG dimensions={dimensions} motionStyle={apolloOpacity} url="/static/vid/apollo11.mp4" mobileURL="/static/vid/apollo11_m.mp4"/>}
         {issView && <VideoBG dimensions={dimensions} motionStyle={issOpacity} url="/static/vid/iss.mp4" mobileURL="/static/vid/iss_m.mp4"/>}
