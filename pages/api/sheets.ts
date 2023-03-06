@@ -31,7 +31,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const getEmail = async (emailCol: string, email: string) => {
         const emails = await sheets.spreadsheets.values.get({
             spreadsheetId: sheetID,
-            range: sheetName + emailCol+'1:'+emailCol+'9999', // sheet name
+            majorDimension: 'COLUMNS',
+            range: sheetName + emailCol + '1:' + emailCol + '9999', // sheet name
         })
         
         return [emails.data.values[0].includes(email), emails.data.values.length];
@@ -64,7 +65,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (alreadySignedUp) {
             res.status(200).json({e: 'already_registered'})
         } else {
-
             try {
                 const tryRegister = await registerEmail([bodyParams], sheetName + 'A1:' + columnLetters[headers.length - 1] + lastRow.toString());
                 res.status(200).json({e: 'success'})
