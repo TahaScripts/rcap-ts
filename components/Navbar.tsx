@@ -29,7 +29,7 @@ export default function Navbar({scroll, navLinks, current, ctaOpen = () => {}}: 
                 <m.div initial={{scale:0}} animate={{scale:1 }} transition={{duration: 0.1}} exit={{scale: 0}} className="nav-expand">
                     <div className="row ">
                         <div className="shell !flex flex-row">                            
-                            <img className="max-w-[40px] md:max-w-[60px] invert" src="/static/img/nav/rcaplogo.svg"/>
+                            <a href='https://www.republiccapital.co' target='_blank' rel="noreferrer" className="max-w-[40px] md:max-w-[60px]"><img className="w-full invert" src="/static/img/nav/rcaplogo.svg"/></a>
                             <div className="grow"/>
                             <m.button onClick={(e) => {e.preventDefault(); setBurgerOpen(false)}} className="max-w-[20px]"><img className=" w-full" src="/static/img/close_light.png"/></m.button>
                         </div>
